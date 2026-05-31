@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eddy Lima · Portafolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <style>
+    /* ── RESET ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* ── BASE ── */
+    :root {
+      --cyan:   #00f3ff;
+      --blue:   #0084ff;
+      --white:  #ffffff;
+      --bg:     #000000;
+      --bg-card:#000d1a;
+      --bg-cert:#00040d;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--cyan);
+      font-family: 'Share Tech Mono', monospace;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── SCANLINES ── */
+    .scanlines {
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent, transparent 2px,
+        rgba(0, 243, 255, 0.015) 2px,
+        rgba(0, 243, 255, 0.015) 4px
+      );
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* ── CORNER DECORATIONS ── */
+    .corner { position: fixed; width: 50px; height: 50px; opacity: 0.5; z-index: 999; }
+    .corner.tl { top: 0; left: 0; border-top: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
+    .corner.tr { top: 0; right: 0; border-top: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+    .corner.bl { bottom: 0; left: 0; border-bottom: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
+    .corner.br { bottom: 0; right: 0; border-bottom: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+
+    /* ── HEADER ── */
+    header {
+      border-bottom: 1px solid rgba(0, 243, 255, 0.25);
+      padding: 1rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(6px);
+      z-index: 100;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 55%;
+      height: 1px;
+      background: var(--cyan);
+      box-shadow: 0 0 12px var(--cyan);
+    }
+
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 900;
+      letter-spacing: 5px;
+      color: var(--white);
+      text-shadow: 0 0 20px var(--cyan), 0 0 40px rgba(0, 132, 255, 0.5);
+      text-decoration: none;
+    }
+
+    nav { display: flex; gap: 2rem; }
+
+    nav a {
+      color: rgba(0, 243, 255, 0.55);
+      text-decoration: none;
+      font-size: 0.6rem;
+      letter-spacing: 2.5px;
+      transition: color 0.2s, text-shadow 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--white);
+      text-shadow: 0 0 10px var(--cyan);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 5rem 2rem 3.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Grid background — más visible */
+    .grid-bg {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 132, 255, 0.12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 132, 255, 0.12) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .hero-tag {
+      font-size: 0.6rem;
+      letter-spacing: 5px;
+      color: var(--blue);
+      margin-bottom: 0.8rem;
+      position: relative;
+    }
+
+    .hero-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      font-weight: 900;
+      color: var(--white);
+      text-shadow: 0 0 30px var(--cyan), 0 0 60px rgba(0, 132, 255, 0.5);
+      letter-spacing: 6px;
+      line-height: 1.1;
+      position: relative;
+    }
+
+    .hero-role {
+      font-size: 0.72rem;
+      color: rgba(0, 243, 255, 0.7);
+      letter-spacing: 3px;
+      margin-top: 1rem;
+      position: relative;
+    }
+
+    .hero-line {
+      width: 120px;
+      height: 2px;
+      background: var(--cyan);
+      box-shadow: 0 0 14px var(--cyan);
+      margin: 1.8rem auto;
+      position: relative;
+    }
+
+    .hero-sub {
+      font-size: 0.6rem;
+      color: rgba(0, 243, 255, 0.25);
+      letter-spacing: 3px;
+      position: relative;
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 3rem 2.5rem;
+      max-width: 900px;
+      margin: 0 auto;
+      border-top: 1px solid rgba(0, 243, 255, 0.07);
+    }
+
+    .section-tag {
+      font-size: 0.52rem;
+      letter-spacing: 4px;
+      color: var(--blue);
+      margin-bottom: 0.3rem;
+    }
+
+    .section-heading {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--white);
+      text-shadow: 0 0 12px rgba(0, 243, 255, 0.35);
+      letter-spacing: 4px;
+      margin-bottom: 1.8rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid rgba(0, 243, 255, 0.15);
+    }
+
+    /* ── SOBRE MÍ ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 2.2rem;
+      align-items: start;
+    }
+
+    .photo-frame {
+      width: 110px;
+      height: 130px;
+      border: 1px solid rgba(0, 243, 255, 0.35);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-card);
+      flex-shrink: 0;
+    }
+
+    .photo-frame::before {
+      content: '';
+      position: absolute; top: -2px; left: -2px;
+      width: 18px; height: 18px;
+      border-top: 2px solid var(--cyan);
+      border-left: 2px solid var(--cyan);
+    }
+
+    .photo-frame::after {
+      content: '';
+      position: absolute; bottom: -2px; right: -2px;
+      width: 18px; height: 18px;
+      border-bottom: 2px solid var(--cyan);
+      border-right: 2px solid var(--cyan);
+    }
+
+    .photo-placeholder {
+      text-align: center;
+      color: rgba(0, 243, 255, 0.25);
+    }
+
+    .photo-placeholder svg { width: 38px; height: 38px; margin-bottom: 0.4rem; }
+    .photo-placeholder span { font-size: 0.46rem; letter-spacing: 1.5px; display: block; }
+
+    .about-bio {
+      font-size: 0.72rem;
+      color: rgba(0, 243, 255, 0.7);
+      line-height: 2;
+      margin-bottom: 1.5rem;
+    }
+
+    .skills-label {
+      font-size: 0.52rem;
+      letter-spacing: 3px;
+      color: var(--blue);
+      margin-bottom: 0.9rem;
+    }
+
+    .skill-row {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .skill-name {
+      font-size: 0.6rem;
+      color: rgba(0, 243, 255, 0.85);
+      width: 90px;
+      letter-spacing: 1px;
+      flex-shrink: 0;
+    }
+
+    .skill-bar-track {
+      flex: 1;
+      height: 4px;
+      background: rgba(0, 243, 255, 0.08);
+    }
+
+    .skill-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      box-shadow: 0 0 8px rgba(0, 243, 255, 0.5);
+      position: relative;
+    }
+
+    .skill-bar-fill::after {
+      content: '';
+      position: absolute; right: -1px; top: -4px;
+      width: 2px; height: 12px;
+      background: var(--cyan);
+      box-shadow: 0 0 6px var(--cyan);
+    }
+
+    .skill-pct {
+      font-size: 0.56rem;
+      color: rgba(0, 243, 255, 0.6);
+      width: 30px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* ── PROYECTOS ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.3rem;
+    }
+
+    .card {
+      border: 1px solid rgba(0, 243, 255, 0.18);
+      background: var(--bg-card);
+      padding: 1.3rem;
+      position: relative;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      text-decoration: none;
+      display: block;
+    }
+
+    .card:hover {
+      border-color: rgba(0, 243, 255, 0.6);
+      box-shadow: 0 0 20px rgba(0, 243, 255, 0.1), inset 0 0 20px rgba(0, 243, 255, 0.04);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute; top: -1px; left: -1px;
+      width: 16px; height: 16px;
+      border-top: 2px solid var(--cyan);
+      border-left: 2px solid var(--cyan);
+    }
+
+    .card::after {
+      content: '';
+      position: absolute; bottom: -1px; right: -1px;
+      width: 16px; height: 16px;
+      border-bottom: 2px solid var(--cyan);
+      border-right: 2px solid var(--cyan);
+    }
+
+    .card-id {
+      font-size: 0.5rem;
+      color: var(--blue);
+      letter-spacing: 3px;
+      margin-bottom: 0.6rem;
+    }
+
+    .card-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.78rem;
+      color: var(--white);
+      margin-bottom: 0.4rem;
+    }
+
+    .card-desc {
+      font-size: 0.62rem;
+      color: rgba(0, 243, 255, 0.5);
+      line-height: 1.7;
+    }
+
+    .card-tag {
+      display: inline-block;
+      font-size: 0.5rem;
+      color: var(--blue);
+      border: 1px solid rgba(0, 132, 255, 0.3);
+      padding: 2px 8px;
+      margin-top: 0.9rem;
+      letter-spacing: 1px;
+    }
+
+    .card.dim { opacity: 0.35; }
+    .card.dim:hover { border-color: rgba(0, 243, 255, 0.18); box-shadow: none; }
+
+    /* ── CERTIFICADOS ── */
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .cert-card {
+      border: 1px solid rgba(0, 132, 255, 0.2);
+      background: var(--bg-cert);
+      padding: 1.2rem;
+      position: relative;
+    }
+
+    .cert-card::before {
+      content: '';
+      position: absolute; top: -1px; left: -1px;
+      width: 14px; height: 14px;
+      border-top: 2px solid var(--blue);
+      border-left: 2px solid var(--blue);
+    }
+
+    .cert-card::after {
+      content: '';
+      position: absolute; bottom: -1px; right: -1px;
+      width: 14px; height: 14px;
+      border-bottom: 2px solid var(--blue);
+      border-right: 2px solid var(--blue);
+    }
+
+    .cert-icon {
+      font-size: 0.52rem;
+      color: var(--blue);
+      letter-spacing: 2px;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .cert-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--blue);
+      box-shadow: 0 0 6px var(--blue);
+      flex-shrink: 0;
+    }
+
+    .cert-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.72rem;
+      color: var(--white);
+      margin-bottom: 0.3rem;
+    }
+
+    .cert-issuer { font-size: 0.6rem; color: rgba(0, 132, 255, 0.7); }
+    .cert-year { font-size: 0.5rem; color: rgba(0, 243, 255, 0.3); margin-top: 0.5rem; }
+    .cert-card.dim { opacity: 0.35; }
+
+    /* ── CONTACTO ── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      max-width: 520px;
+    }
+
+    .contact-card {
+      border: 1px solid rgba(0, 243, 255, 0.14);
+      background: var(--bg-card);
+      padding: 0.75rem 0.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.45rem;
+      position: relative;
+      text-decoration: none;
+      transition: border-color 0.2s;
+    }
+
+    .contact-card:hover { border-color: rgba(0, 243, 255, 0.45); }
+
+    .contact-card::before {
+      content: '';
+      position: absolute; top: -1px; left: -1px;
+      width: 8px; height: 8px;
+      border-top: 1px solid var(--cyan);
+      border-left: 1px solid var(--cyan);
+    }
+
+    .contact-card::after {
+      content: '';
+      position: absolute; bottom: -1px; right: -1px;
+      width: 8px; height: 8px;
+      border-bottom: 1px solid var(--cyan);
+      border-right: 1px solid var(--cyan);
+    }
+
+    .contact-icon {
+      width: 28px; height: 28px;
+      border: 1px solid rgba(0, 243, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .contact-icon svg {
+      width: 14px; height: 14px;
+      stroke: var(--cyan);
+      fill: none;
+      stroke-width: 1.5;
+    }
+
+    .contact-label {
+      font-size: 0.46rem;
+      color: var(--blue);
+      letter-spacing: 2px;
+    }
+
+    .contact-value {
+      font-size: 0.54rem;
+      color: rgba(0, 243, 255, 0.8);
+      word-break: break-all;
+    }
+
+    .contact-pending {
+      font-size: 0.48rem;
+      color: rgba(0, 243, 255, 0.25);
+      letter-spacing: 1px;
+    }
+
+    .contact-note {
+      font-size: 0.54rem;
+      color: rgba(0, 243, 255, 0.18);
+      letter-spacing: 2px;
+      margin-top: 1.2rem;
+    }
+
+    /* ── STATUS BAR ── */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.5rem;
+      letter-spacing: 2px;
+      color: rgba(0, 243, 255, 0.3);
+      padding: 1rem 2.5rem;
+      border-top: 1px solid rgba(0, 243, 255, 0.08);
+      margin-top: 1rem;
+    }
+
+    .pulse {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 6px var(--cyan);
+      animation: pulse 2s infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.15; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .photo-frame { width: 90px; height: 110px; }
+      nav { gap: 1rem; }
+      .contact-grid { grid-template-columns: 1fr 1fr; max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="scanlines"></div>
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
+  <!-- HEADER -->
+  <header>
+    <a href="#" class="logo">ELIMA</a>
+    <nav>
+      <a href="#sobre-mi">SOBRE MÍ</a>
+      <a href="#proyectos">PROYECTOS</a>
+      <a href="#certificados">CERTIFICADOS</a>
+      <a href="#contacto">CONTACTO</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="grid-bg"></div>
+    <p class="hero-tag">// PORTAFOLIO DIGITAL //</p>
+    <h1 class="hero-name">EDDY<br>LIMA</h1>
+    <p class="hero-role">INGENIERO EN SISTEMAS &nbsp;·&nbsp; BACK-END &nbsp;·&nbsp; CLOUD</p>
+    <div class="hero-line"></div>
+    <p class="hero-sub">BIENVENIDO A LA RED</p>
+  </div>
+
+  <!-- SOBRE MÍ -->
+  <section id="sobre-mi">
+    <p class="section-tag">// 01</p>
+    <h2 class="section-heading">SOBRE MÍ</h2>
+    <div class="about-grid">
+
+      <div class="photo-frame">
+        <div class="photo-placeholder">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="14" r="7" stroke="#00f3ff" stroke-width="1" opacity="0.4"/>
+            <path d="M4 36 Q4 26 20 26 Q36 26 36 36" stroke="#00f3ff" stroke-width="1" opacity="0.4" fill="none"/>
+          </svg>
+          <span>TU FOTO</span>
+        </div>
+      </div>
+
+      <div>
+        <p class="about-bio">
+          Soy Eddy Lima, graduado en Ingeniero en Sistemas en la Universidad Espíritu Santo.
+          Enfocado en Back-end y herramientas en la Nube. Ambicioso, disciplinado y con ganas
+          de aprender en el proceso.
+        </p>
+
+        <p class="skills-label">// LENGUAJES Y HERRAMIENTAS</p>
+
+        <div class="skill-row">
+          <span class="skill-name">JAVA</span>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:42%"></div></div>
+          <span class="skill-pct">42%</span>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">SQL</span>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:38%"></div></div>
+          <span class="skill-pct">38%</span>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">SPRING</span>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:28%"></div></div>
+          <span class="skill-pct">28%</span>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">HTML / CSS</span>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:33%"></div></div>
+          <span class="skill-pct">33%</span>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">AWS / CLOUD</span>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:20%"></div></div>
+          <span class="skill-pct">20%</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROYECTOS -->
+  <section id="proyectos">
+    <p class="section-tag">// 02</p>
+    <h2 class="section-heading">PROYECTOS</h2>
+    <div class="projects-grid">
+
+      <a href="./2026-1 - Lenguajes de Programación/index.html" class="card">
+        <p class="card-id">PRJ-001</p>
+        <h3 class="card-name">Lenguajes de Programación</h3>
+        <p class="card-desc">Exploración y análisis de distintos lenguajes de programación modernos.</p>
+        <span class="card-tag">2026-1</span>
+      </a>
+
+      <div class="card dim">
+        <p class="card-id">PRJ-002</p>
+        <h3 class="card-name">PRÓXIMO PROYECTO</h3>
+        <p class="card-desc">En construcción...</p>
+        <span class="card-tag">PENDIENTE</span>
+      </div>
+
+      <div class="card dim">
+        <p class="card-id">PRJ-003</p>
+        <h3 class="card-name">PRÓXIMO PROYECTO</h3>
+        <p class="card-desc">En construcción...</p>
+        <span class="card-tag">PENDIENTE</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CERTIFICADOS -->
+  <section id="certificados">
+    <p class="section-tag">// 03</p>
+    <h2 class="section-heading">CERTIFICADOS</h2>
+    <div class="certs-grid">
+
+      <div class="cert-card">
+        <div class="cert-icon"><div class="cert-dot"></div>VERIFICADO</div>
+        <h3 class="cert-name">TU CERTIFICADO</h3>
+        <p class="cert-issuer">Institución Emisora</p>
+        <p class="cert-year">AÑO · CATEGORÍA</p>
+      </div>
+
+      <div class="cert-card dim">
+        <div class="cert-icon">
+          <div class="cert-dot" style="background:rgba(0,132,255,0.25);box-shadow:none"></div>
+          PENDIENTE
+        </div>
+        <h3 class="cert-name">PRÓXIMO CERT.</h3>
+        <p class="cert-issuer">—</p>
+      </div>
+
+      <div class="cert-card dim">
+        <div class="cert-icon">
+          <div class="cert-dot" style="background:rgba(0,132,255,0.25);box-shadow:none"></div>
+          PENDIENTE
+        </div>
+        <h3 class="cert-name">PRÓXIMO CERT.</h3>
+        <p class="cert-issuer">—</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto">
+    <p class="section-tag">// 04</p>
+    <h2 class="section-heading">CONTACTO</h2>
+    <div class="contact-grid">
+
+      <div class="contact-card">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+            <rect x="2" y="9" width="4" height="12"/>
+            <circle cx="4" cy="4" r="2"/>
+          </svg>
+        </div>
+        <p class="contact-label">LINKEDIN</p>
+        <p class="contact-pending">// próximamente</p>
+      </div>
+
+      <a href="mailto:elima@uees.edu.ec" class="contact-card">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </div>
+        <p class="contact-label">EMAIL</p>
+        <p class="contact-value">elima@uees.edu.ec</p>
+      </a>
+
+      <a href="https://github.com/elima-hub" target="_blank" rel="noopener" class="contact-card">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+          </svg>
+        </div>
+        <p class="contact-label">GITHUB</p>
+        <p class="contact-value">elima-hub</p>
+      </a>
+
+    </div>
+    <p class="contact-note">// DISPONIBLE PARA OPORTUNIDADES PROFESIONALES</p>
+  </section>
+
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <div class="pulse"></div>
+    <span>SISTEMA ACTIVO</span>
+    <span style="margin-left:auto;">ELIMA-HUB v1.0 &nbsp;·&nbsp; GITHUB PAGES</span>
+  </div>
+
+</body>
+</html>
