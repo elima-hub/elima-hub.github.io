@@ -11,15 +11,16 @@
 
     /* ── BASE ── */
     :root {
-      --cyan:   #00f3ff;
-      --blue:   #0084ff;
-      --white:  #ffffff;
-      --bg:     #000000;
-      --bg-card:#000d1a;
-      --bg-cert:#00040d;
+      --cyan:     #00f3ff;
+      --blue:     #0084ff;
+      --white:    #ffffff;
+      --bg:       #000000;
+      --bg-card:  #000d1a;
+      --bg-cert:  #00040d;
+      --hover-bg: #00e5f0;
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; font-size: 26px; }
 
     body {
       background: var(--bg);
@@ -43,7 +44,7 @@
     }
 
     /* ── CORNER DECORATIONS ── */
-    .corner { position: fixed; width: 50px; height: 50px; opacity: 0.5; z-index: 999; }
+    .corner { position: fixed; width: 62px; height: 62px; opacity: 0.5; z-index: 999; }
     .corner.tl { top: 0; left: 0; border-top: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
     .corner.tr { top: 0; right: 0; border-top: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
     .corner.bl { bottom: 0; left: 0; border-bottom: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
@@ -106,7 +107,6 @@
       overflow: hidden;
     }
 
-    /* Grid background — más visible */
     .grid-bg {
       position: absolute; inset: 0;
       background-image:
@@ -146,7 +146,7 @@
     }
 
     .hero-line {
-      width: 120px;
+      width: 150px;
       height: 2px;
       background: var(--cyan);
       box-shadow: 0 0 14px var(--cyan);
@@ -163,8 +163,8 @@
 
     /* ── SECTIONS ── */
     section {
-      padding: 3rem 2.5rem;
-      max-width: 900px;
+      padding: 3rem 2.5rem; 
+      max-width: 1125px;
       margin: 0 auto;
       border-top: 1px solid rgba(0, 243, 255, 0.07);
     }
@@ -174,6 +174,8 @@
       letter-spacing: 4px;
       color: var(--blue);
       margin-bottom: 0.3rem;
+      /* offset para que el nav llegue al número, no a la palabra */
+      scroll-margin-top: 5rem;
     }
 
     .section-heading {
@@ -197,8 +199,8 @@
     }
 
     .photo-frame {
-      width: 110px;
-      height: 130px;
+      width: 200px;
+      height: 238px;
       border: 1px solid rgba(0, 243, 255, 0.35);
       position: relative;
       display: flex;
@@ -211,7 +213,7 @@
     .photo-frame::before {
       content: '';
       position: absolute; top: -2px; left: -2px;
-      width: 18px; height: 18px;
+      width: 22px; height: 22px;
       border-top: 2px solid var(--cyan);
       border-left: 2px solid var(--cyan);
     }
@@ -219,16 +221,12 @@
     .photo-frame::after {
       content: '';
       position: absolute; bottom: -2px; right: -2px;
-      width: 18px; height: 18px;
+      width: 22px; height: 22px;
       border-bottom: 2px solid var(--cyan);
       border-right: 2px solid var(--cyan);
     }
 
-    .photo-placeholder {
-      text-align: center;
-      color: rgba(0, 243, 255, 0.25);
-    }
-
+    .photo-placeholder { text-align: center; color: rgba(0, 243, 255, 0.25); }
     .photo-placeholder svg { width: 38px; height: 38px; margin-bottom: 0.4rem; }
     .photo-placeholder span { font-size: 0.46rem; letter-spacing: 1.5px; display: block; }
 
@@ -297,37 +295,178 @@
       gap: 1.3rem;
     }
 
+    /* ── CERTIFICADOS ── */
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.2rem;
+    }
+
+    /* ── CONTACTO ── */
+    /* ocupa todo el ancho de la sección, 4 columnas iguales */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.85rem;
+      width: 100%;
+    }
+
+    /* ════════════════════════════════════════
+       CAJAS BASE — card / cert-card / contact-card
+       ════════════════════════════════════════ */
+    .card,
+    .cert-card,
+    .contact-card {
+      position: relative;
+      transition: background 0.25s ease, color 0.25s ease,
+                  border-color 0.25s ease, box-shadow 0.25s ease;
+      /* las esquinas usan pseudo-elementos que también transicionan */
+    }
+
+    /* Esquinas base — ::before = sup-izq, ::after = inf-der */
+    .card::before,
+    .cert-card::before,
+    .contact-card::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: -1px;
+      width: 17px; height: 17px;
+      border-top: 2px solid var(--cyan);
+      border-left: 2px solid var(--cyan);
+      border-bottom: none;
+      border-right: none;
+      transition: top 0.25s ease, left 0.25s ease,
+                  bottom 0.25s ease, right 0.25s ease,
+                  border-color 0.25s ease;
+    }
+
+    .card::after,
+    .cert-card::after,
+    .contact-card::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; right: -1px;
+      width: 17px; height: 17px;
+      border-bottom: 2px solid var(--cyan);
+      border-right: 2px solid var(--cyan);
+      border-top: none;
+      border-left: none;
+      transition: top 0.25s ease, left 0.25s ease,
+                  bottom 0.25s ease, right 0.25s ease,
+                  border-color 0.25s ease;
+    }
+
+    /* Estilos específicos de cada caja */
+    
+    .fade-up {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    
     .card {
       border: 1px solid rgba(0, 243, 255, 0.18);
       background: var(--bg-card);
       padding: 1.3rem;
-      position: relative;
-      transition: border-color 0.3s, box-shadow 0.3s;
       text-decoration: none;
       display: block;
     }
 
-    .card:hover {
-      border-color: rgba(0, 243, 255, 0.6);
-      box-shadow: 0 0 20px rgba(0, 243, 255, 0.1), inset 0 0 20px rgba(0, 243, 255, 0.04);
+    .cert-card {
+      border: 1px solid rgba(0, 132, 255, 0.2);
+      background: var(--bg-cert);
+      padding: 1.2rem;
+      text-decoration: none;
+      color: inherit;
     }
 
-    .card::before {
-      content: '';
-      position: absolute; top: -1px; left: -1px;
-      width: 16px; height: 16px;
-      border-top: 2px solid var(--cyan);
-      border-left: 2px solid var(--cyan);
+    .contact-card {
+      border: 1px solid rgba(0, 243, 255, 0.14);
+      background: var(--bg-cert);
+      padding: 0.9rem 0.85rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.5rem;
+      text-decoration: none;
     }
 
-    .card::after {
-      content: '';
-      position: absolute; bottom: -1px; right: -1px;
-      width: 16px; height: 16px;
-      border-bottom: 2px solid var(--cyan);
-      border-right: 2px solid var(--cyan);
+    /* ── HOVER UNIVERSAL ──
+       Fondo cian claro, texto negro, esquinas invertidas en negro */
+    .card:hover,
+    .cert-card:hover,
+    .contact-card:hover {
+      background: var(--hover-bg);
+      border-color: var(--hover-bg);
+      box-shadow: 0 0 28px rgba(0, 243, 255, 0.25);
+      color: #000;
     }
 
+    /* Textos se vuelven negros en hover */
+    .card:hover .card-id,
+    .card:hover .card-name,
+    .card:hover .card-desc,
+    .card:hover .card-tag,
+    .cert-card:hover .cert-name,
+    .cert-card:hover .cert-issuer,
+    .cert-card:hover .cert-year,
+    .cert-card:hover .cert-icon,
+    .cert-card:hover .cert-dot,
+    .contact-card:hover .contact-label,
+    .contact-card:hover .contact-value,
+    .contact-card:hover .contact-pending {
+      color: #000;
+    }
+
+    .card:hover .card-tag {
+      border-color: rgba(0, 0, 0, 0.25);
+    }
+
+    .contact-card:hover .contact-icon {
+      border-color: rgba(0, 0, 0, 0.25);
+    }
+
+    .contact-card:hover .contact-icon svg {
+      stroke: #000;
+    }
+
+    .cert-card:hover .cert-dot {
+      background: #000;
+      box-shadow: none;
+    }
+
+    /* Esquinas invertidas en hover: ::before va a inf-der, ::after va a sup-izq */
+    .card:hover::before,
+    .cert-card:hover::before,
+    .contact-card:hover::before {
+      top: auto;   bottom: -1px;
+      left: auto;  right: -1px;
+      border-top: none;   border-left: none;
+      border-bottom: 2px solid #000;
+      border-right:  2px solid #000;
+    }
+
+    .card:hover::after,
+    .cert-card:hover::after,
+    .contact-card:hover::after {
+      bottom: auto; top: -1px;
+      right: auto;  left: -1px;
+      border-bottom: none; border-right: none;
+      border-top:  2px solid #000;
+      border-left: 2px solid #000;
+    }
+
+    /* Dim — proyectos pendientes no tienen hover */
+    .card.dim { opacity: 0.35; pointer-events: none; }
+
+    /* ── CARD INTERNALS ── */
     .card-id {
       font-size: 0.5rem;
       color: var(--blue);
@@ -358,39 +497,7 @@
       letter-spacing: 1px;
     }
 
-    .card.dim { opacity: 0.35; }
-    .card.dim:hover { border-color: rgba(0, 243, 255, 0.18); box-shadow: none; }
-
-    /* ── CERTIFICADOS ── */
-    .certs-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 1.2rem;
-    }
-
-    .cert-card {
-      border: 1px solid rgba(0, 132, 255, 0.2);
-      background: var(--bg-cert);
-      padding: 1.2rem;
-      position: relative;
-    }
-
-    .cert-card::before {
-      content: '';
-      position: absolute; top: -1px; left: -1px;
-      width: 14px; height: 14px;
-      border-top: 2px solid var(--blue);
-      border-left: 2px solid var(--blue);
-    }
-
-    .cert-card::after {
-      content: '';
-      position: absolute; bottom: -1px; right: -1px;
-      width: 14px; height: 14px;
-      border-bottom: 2px solid var(--blue);
-      border-right: 2px solid var(--blue);
-    }
-
+    /* ── CERT INTERNALS ── */
     .cert-icon {
       font-size: 0.52rem;
       color: var(--blue);
@@ -407,6 +514,7 @@
       background: var(--blue);
       box-shadow: 0 0 6px var(--blue);
       flex-shrink: 0;
+      transition: background 0.25s ease, box-shadow 0.25s ease;
     }
 
     .cert-name {
@@ -417,80 +525,46 @@
     }
 
     .cert-issuer { font-size: 0.6rem; color: rgba(0, 132, 255, 0.7); }
-    .cert-year { font-size: 0.5rem; color: rgba(0, 243, 255, 0.3); margin-top: 0.5rem; }
-    .cert-card.dim { opacity: 0.35; }
+    .cert-year   { font-size: 0.5rem; color: rgba(0, 243, 255, 0.3); margin-top: 0.5rem; }
+    .cert-card.dim { opacity: 0.35; pointer-events: none; }
 
-    /* ── CONTACTO ── */
-    .contact-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      max-width: 520px;
-    }
-
-    .contact-card {
-      border: 1px solid rgba(0, 243, 255, 0.14);
-      background: var(--bg-card);
-      padding: 0.75rem 0.8rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 0.45rem;
-      position: relative;
-      text-decoration: none;
-      transition: border-color 0.2s;
-    }
-
-    .contact-card:hover { border-color: rgba(0, 243, 255, 0.45); }
-
-    .contact-card::before {
-      content: '';
-      position: absolute; top: -1px; left: -1px;
-      width: 8px; height: 8px;
-      border-top: 1px solid var(--cyan);
-      border-left: 1px solid var(--cyan);
-    }
-
-    .contact-card::after {
-      content: '';
-      position: absolute; bottom: -1px; right: -1px;
-      width: 8px; height: 8px;
-      border-bottom: 1px solid var(--cyan);
-      border-right: 1px solid var(--cyan);
-    }
-
+    /* ── CONTACT INTERNALS ── */
     .contact-icon {
-      width: 28px; height: 28px;
+      width: 44px; height: 44px;
       border: 1px solid rgba(0, 243, 255, 0.2);
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: border-color 0.25s ease;
     }
 
     .contact-icon svg {
-      width: 14px; height: 14px;
+      width: 21px; height: 21px;
       stroke: var(--cyan);
       fill: none;
-      stroke-width: 1.5;
+      stroke-width: 1.6;
+      transition: stroke 0.25s ease;
     }
 
     .contact-label {
-      font-size: 0.46rem;
+      font-size: 0.5rem;
       color: var(--blue);
       letter-spacing: 2px;
+      transition: color 0.25s ease;
     }
 
     .contact-value {
-      font-size: 0.54rem;
+      font-size: 0.58rem;
       color: rgba(0, 243, 255, 0.8);
       word-break: break-all;
+      transition: color 0.25s ease;
     }
 
     .contact-pending {
-      font-size: 0.48rem;
+      font-size: 0.5rem;
       color: rgba(0, 243, 255, 0.25);
       letter-spacing: 1px;
+      transition: color 0.25s ease;
     }
 
     .contact-note {
@@ -528,12 +602,22 @@
     }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 600px) {
+    @media (max-width: 700px) {
       .about-grid { grid-template-columns: 1fr; }
       .photo-frame { width: 90px; height: 110px; }
       nav { gap: 1rem; }
-      .contact-grid { grid-template-columns: 1fr 1fr; max-width: 100%; }
+      .contact-grid { grid-template-columns: 1fr 1fr; }
     }
+
+    .glitch-overlay {
+      position: fixed; inset: 0;
+      background: var(--cyan);
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      mix-blend-mode: difference;
+    }
+
   </style>
 </head>
 <body>
@@ -559,16 +643,16 @@
   <div class="hero">
     <div class="grid-bg"></div>
     <p class="hero-tag">// PORTAFOLIO DIGITAL //</p>
-    <h1 class="hero-name">EDDY<br>LIMA</h1>
+    <h1 class="hero-name" id="typing-name">&nbsp;</h1>
     <p class="hero-role">INGENIERO EN SISTEMAS &nbsp;·&nbsp; BACK-END &nbsp;·&nbsp; CLOUD</p>
     <div class="hero-line"></div>
-    <p class="hero-sub">BIENVENIDO A LA RED</p>
+    <p class="hero-sub" id="typing-sub"></p>
   </div>
 
   <!-- SOBRE MÍ -->
-  <section id="sobre-mi">
-    <p class="section-tag">// 01</p>
-    <h2 class="section-heading">SOBRE MÍ</h2>
+  <section>
+    <p class="section-tag fade-up" id="sobre-mi">// 01</p>
+    <h2 class="section-heading fade-up">SOBRE MÍ</h2>
     <div class="about-grid">
 
       <div class="photo-frame">
@@ -583,7 +667,7 @@
 
       <div>
         <p class="about-bio">
-          Soy Eddy Lima, graduado en Ingeniero en Sistemas en la Universidad Espíritu Santo.
+          Soy Eddy Lima, graduado de Ingeniero en Sistemas en la Universidad Espíritu Santo.
           Enfocado en Back-end y herramientas en la Nube. Ambicioso, disciplinado y con ganas
           de aprender en el proceso.
         </p>
@@ -620,76 +704,72 @@
   </section>
 
   <!-- PROYECTOS -->
-  <section id="proyectos">
-    <p class="section-tag">// 02</p>
-    <h2 class="section-heading">PROYECTOS</h2>
+  <section>
+    <p class="section-tag fade-up" id="proyectos">// 02</p>
+    <h2 class="section-heading fade-up">PROYECTOS</h2>
     <div class="projects-grid">
 
-      <a href="./2026-1 - Lenguajes de Programación/index.html" class="card">
+      <a href="./2025-2 - Programación Orientada a Objetos/index.html" class="card" onclick="glitchTransition(event, this.href)">
         <p class="card-id">PRJ-001</p>
+        <h3 class="card-name">Programación Orientada a Objetos</h3>
+        <p class="card-desc">Implementación de Billetera Virtual con interfaz a nivel terminal</p>
+        <span class="card-tag">2025-2</span>
+      </a>
+
+      <a href="./2026-1 - Lenguajes de Programación/index.html" class="card" onclick="glitchTransition(event, this.href)">
+        <p class="card-id">PRJ-002</p>
         <h3 class="card-name">Lenguajes de Programación</h3>
-        <p class="card-desc">Exploración y análisis de distintos lenguajes de programación modernos.</p>
+        <p class="card-desc">Sistema de juego a base de consultas usando Laravel y Prolog</p>
         <span class="card-tag">2026-1</span>
       </a>
 
-      <div class="card dim">
-        <p class="card-id">PRJ-002</p>
-        <h3 class="card-name">PRÓXIMO PROYECTO</h3>
-        <p class="card-desc">En construcción...</p>
-        <span class="card-tag">PENDIENTE</span>
-      </div>
-
-      <div class="card dim">
+      <a href="./2026-1 - KeyVault/index.html" class="card" onclick="glitchTransition(event, this.href)">
         <p class="card-id">PRJ-003</p>
-        <h3 class="card-name">PRÓXIMO PROYECTO</h3>
-        <p class="card-desc">En construcción...</p>
-        <span class="card-tag">PENDIENTE</span>
-      </div>
+        <h3 class="card-name">KeyVault</h3>
+        <p class="card-desc">Gestor de credenciales digitales cifrado, desarrollado en pareja con Laravel</p>
+        <span class="card-tag">2026-1</span>
+      </a>
 
     </div>
   </section>
 
   <!-- CERTIFICADOS -->
-  <section id="certificados">
-    <p class="section-tag">// 03</p>
-    <h2 class="section-heading">CERTIFICADOS</h2>
+  <section>
+    <p class="section-tag fade-up" id="certificados">// 03</p>
+    <h2 class="section-heading fade-up">CERTIFICADOS</h2>
     <div class="certs-grid">
 
-      <div class="cert-card">
+      <div class="cert-card fade-up">
+        <div class="cert-icon"><div class="cert-dot"></div>EN PROGRESO</div>
+        <h3 class="cert-name">PROGRAMACIÓN ORIENTADA A OBJETOS</h3>
+        <p class="cert-issuer">TodoCode Academy</p>
+        <p class="cert-year">2026 · PROGRAMACIÓN</p>
+      </div>
+
+      <a href="https://drive.google.com/file/d/1q_2r1jH4IIYktbaNUckAUcofbAZKCbm1/view?usp=sharing" target="_blank" rel="noopener" class="cert-card fade-up">
         <div class="cert-icon"><div class="cert-dot"></div>VERIFICADO</div>
-        <h3 class="cert-name">TU CERTIFICADO</h3>
-        <p class="cert-issuer">Institución Emisora</p>
-        <p class="cert-year">AÑO · CATEGORÍA</p>
-      </div>
+        <h3 class="cert-name">BEYOND LIMITS</h3>
+        <p class="cert-issuer">Universidad Espíritu Santo</p>
+        <p class="cert-year">2026 · IA</p>
+      </a>
 
-      <div class="cert-card dim">
-        <div class="cert-icon">
-          <div class="cert-dot" style="background:rgba(0,132,255,0.25);box-shadow:none"></div>
-          PENDIENTE
-        </div>
-        <h3 class="cert-name">PRÓXIMO CERT.</h3>
-        <p class="cert-issuer">—</p>
-      </div>
-
-      <div class="cert-card dim">
-        <div class="cert-icon">
-          <div class="cert-dot" style="background:rgba(0,132,255,0.25);box-shadow:none"></div>
-          PENDIENTE
-        </div>
-        <h3 class="cert-name">PRÓXIMO CERT.</h3>
-        <p class="cert-issuer">—</p>
-      </div>
+      <a href="https://drive.google.com/file/d/1NLwB95jLnbaulVc-8jDKfX8eS74DkBl6/view?usp=sharing" target="_blank" rel="noopener" class="cert-card fade-up">
+        <div class="cert-icon"><div class="cert-dot"></div>VERIFICADO</div>
+        <h3 class="cert-name">CURSO DE IA: DE 0 A AGENTES</h3>
+        <p class="cert-issuer">Big School</p>
+        <p class="cert-year">2026 · IA</p>
+      </a>
 
     </div>
   </section>
 
   <!-- CONTACTO -->
-  <section id="contacto">
-    <p class="section-tag">// 04</p>
-    <h2 class="section-heading">CONTACTO</h2>
+  <section>
+    <p class="section-tag fade-up" id="contacto">// 04</p>
+    <h2 class="section-heading fade-up">CONTACTO</h2>
     <div class="contact-grid">
 
-      <div class="contact-card">
+      <div class="contact-card fade-up">
         <div class="contact-icon">
           <svg viewBox="0 0 24 24">
             <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
@@ -701,7 +781,7 @@
         <p class="contact-pending">// próximamente</p>
       </div>
 
-      <a href="mailto:elima@uees.edu.ec" class="contact-card">
+      <a href="mailto:elima@uees.edu.ec" class="contact-card fade-up">
         <div class="contact-icon">
           <svg viewBox="0 0 24 24">
             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
@@ -712,7 +792,7 @@
         <p class="contact-value">elima@uees.edu.ec</p>
       </a>
 
-      <a href="https://github.com/elima-hub" target="_blank" rel="noopener" class="contact-card">
+      <a href="https://github.com/elima-hub" target="_blank" rel="noopener" class="contact-card fade-up">
         <div class="contact-icon">
           <svg viewBox="0 0 24 24">
             <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
@@ -721,6 +801,17 @@
         <p class="contact-label">GITHUB</p>
         <p class="contact-value">elima-hub</p>
       </a>
+
+      <div class="contact-card fade-up">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" stroke-width="1.5">
+            <path d="M18 20v-5h2v7H4v-7h2v5z"/>
+            <path d="M7 17h10v-2H7zM7.4 13.8l9.8 2 .4-2-9.8-2zM8.7 9.9l9 4.1.8-1.8-9-4.2zM11.3 6.3l7.5 6 1.3-1.5-7.6-6zM15 3l-1.5 1.1 5.9 7.9L21 10.9z"/>
+          </svg>
+        </div>
+        <p class="contact-label">STACK OVERFLOW</p>
+        <p class="contact-pending">// próximamente</p>
+      </div>
 
     </div>
     <p class="contact-note">// DISPONIBLE PARA OPORTUNIDADES PROFESIONALES</p>
@@ -732,6 +823,91 @@
     <span>SISTEMA ACTIVO</span>
     <span style="margin-left:auto;">ELIMA-HUB v1.0 &nbsp;·&nbsp; GITHUB PAGES</span>
   </div>
+
+<script>
+    // ── TYPING EFFECT ──
+    const NAME_LINES = ['EDDY', 'LIMA'];
+    const SUB_TEXT   = 'BIENVENIDO A LA RED';
+    const SPEED_NAME = 100;
+    const SPEED_SUB  = 65;
+    const PAUSE      = 450;
+
+    const elName = document.getElementById('typing-name');
+    const elSub  = document.getElementById('typing-sub');
+
+    function typeLine(el, text, speed, cb) {
+      let i = 0;
+      const id = setInterval(() => {
+        el.innerHTML = el.innerHTML.replace('▋', '') + text[i] + '▋';
+        i++;
+        if (i === text.length) {
+          clearInterval(id);
+          el.innerHTML = el.innerHTML.replace('▋', '');
+          if (cb) cb();
+        }
+      }, speed);
+    }
+
+    function typeNameLines(lines, el, speed, pause, cb) {
+      let idx = 0;
+      el.innerHTML = '';
+
+      function next() {
+        if (idx > 0) el.innerHTML += '<br>';
+        const span = document.createElement('span');
+        el.appendChild(span);
+        typeLine(span, lines[idx], speed, () => {
+          idx++;
+          if (idx < lines.length) setTimeout(next, pause);
+          else if (cb) setTimeout(cb, pause);
+        });
+      }
+      next();
+    }
+
+    // Arranca: primero nombre, luego subtítulo
+    window.addEventListener('DOMContentLoaded', () => {
+      typeNameLines(NAME_LINES, elName, SPEED_NAME, PAUSE, () => {
+        typeLine(elSub, SUB_TEXT, SPEED_SUB, null);
+      });
+    });
+
+    // ── FADE-IN EN SCROLL ──
+    const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => {
+        entry.target.classList.add('visible');
+      }, i * 80);
+    } else {
+      entry.target.classList.remove('visible');
+    }
+  });
+}, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    function glitchTransition(e, href) {
+      e.preventDefault();
+      const overlay = document.createElement('div');
+      overlay.className = 'glitch-overlay';
+      document.body.appendChild(overlay);
+
+      const flashes = [0, 80, 140, 200, 280, 360, 420];
+      flashes.forEach((t, i) => {
+        setTimeout(() => {
+          overlay.style.opacity = i % 2 === 0 ? '0.15' : '0';
+        }, t);
+      });
+
+      setTimeout(() => {
+        overlay.style.opacity = '1';
+        overlay.style.transition = 'opacity 0.1s ease';
+      }, 480);
+
+      setTimeout(() => { window.location.href = href; }, 580);
+    }
+  </script>
 
 </body>
 </html>
