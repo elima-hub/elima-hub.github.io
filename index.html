@@ -1,913 +1,349 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Eddy Lima · Portafolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
-  <style>
-    /* ── RESET ── */
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    /* ── BASE ── */
-    :root {
-      --cyan:     #00f3ff;
-      --blue:     #0084ff;
-      --white:    #ffffff;
-      --bg:       #000000;
-      --bg-card:  #000d1a;
-      --bg-cert:  #00040d;
-      --hover-bg: #00e5f0;
-    }
-
-    html { scroll-behavior: smooth; font-size: 26px; }
-
-    body {
-      background: var(--bg);
-      color: var(--cyan);
-      font-family: 'Share Tech Mono', monospace;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* ── SCANLINES ── */
-    .scanlines {
-      position: fixed; inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent, transparent 2px,
-        rgba(0, 243, 255, 0.015) 2px,
-        rgba(0, 243, 255, 0.015) 4px
-      );
-      pointer-events: none;
-      z-index: 1000;
-    }
-
-    /* ── CORNER DECORATIONS ── */
-    .corner { position: fixed; width: 62px; height: 62px; opacity: 0.5; z-index: 999; }
-    .corner.tl { top: 0; left: 0; border-top: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
-    .corner.tr { top: 0; right: 0; border-top: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
-    .corner.bl { bottom: 0; left: 0; border-bottom: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
-    .corner.br { bottom: 0; right: 0; border-bottom: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
-
-    /* ── HEADER ── */
-    header {
-      border-bottom: 1px solid rgba(0, 243, 255, 0.25);
-      padding: 1rem 2.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      background: rgba(0, 0, 0, 0.92);
-      backdrop-filter: blur(6px);
-      z-index: 100;
-    }
-
-    header::after {
-      content: '';
-      position: absolute;
-      bottom: -3px; left: 0;
-      width: 55%;
-      height: 1px;
-      background: var(--cyan);
-      box-shadow: 0 0 12px var(--cyan);
-    }
-
-    .logo {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 900;
-      letter-spacing: 5px;
-      color: var(--white);
-      text-shadow: 0 0 20px var(--cyan), 0 0 40px rgba(0, 132, 255, 0.5);
-      text-decoration: none;
-    }
-
-    nav { display: flex; gap: 2rem; }
-
-    nav a {
-      color: rgba(0, 243, 255, 0.55);
-      text-decoration: none;
-      font-size: 0.6rem;
-      letter-spacing: 2.5px;
-      transition: color 0.2s, text-shadow 0.2s;
-    }
-
-    nav a:hover {
-      color: var(--white);
-      text-shadow: 0 0 10px var(--cyan);
-    }
-
-    /* ── HERO ── */
-    .hero {
-      padding: 5rem 2rem 3.5rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .grid-bg {
-      position: absolute; inset: 0;
-      background-image:
-        linear-gradient(rgba(0, 132, 255, 0.12) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 132, 255, 0.12) 1px, transparent 1px);
-      background-size: 40px 40px;
-      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
-      -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
-      pointer-events: none;
-    }
-
-    .hero-tag {
-      font-size: 0.6rem;
-      letter-spacing: 5px;
-      color: var(--blue);
-      margin-bottom: 0.8rem;
-      position: relative;
-    }
-
-    .hero-name {
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(2rem, 6vw, 3.2rem);
-      font-weight: 900;
-      color: var(--white);
-      text-shadow: 0 0 30px var(--cyan), 0 0 60px rgba(0, 132, 255, 0.5);
-      letter-spacing: 6px;
-      line-height: 1.1;
-      position: relative;
-    }
-
-    .hero-role {
-      font-size: 0.72rem;
-      color: rgba(0, 243, 255, 0.7);
-      letter-spacing: 3px;
-      margin-top: 1rem;
-      position: relative;
-    }
-
-    .hero-line {
-      width: 150px;
-      height: 2px;
-      background: var(--cyan);
-      box-shadow: 0 0 14px var(--cyan);
-      margin: 1.8rem auto;
-      position: relative;
-    }
-
-    .hero-sub {
-      font-size: 0.6rem;
-      color: rgba(0, 243, 255, 0.25);
-      letter-spacing: 3px;
-      position: relative;
-    }
-
-    /* ── SECTIONS ── */
-    section {
-      padding: 3rem 2.5rem; 
-      max-width: 1125px;
-      margin: 0 auto;
-      border-top: 1px solid rgba(0, 243, 255, 0.07);
-    }
-
-    .section-tag {
-      font-size: 0.52rem;
-      letter-spacing: 4px;
-      color: var(--blue);
-      margin-bottom: 0.3rem;
-      /* offset para que el nav llegue al número, no a la palabra */
-      scroll-margin-top: 5rem;
-    }
-
-    .section-heading {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--white);
-      text-shadow: 0 0 12px rgba(0, 243, 255, 0.35);
-      letter-spacing: 4px;
-      margin-bottom: 1.8rem;
-      padding-bottom: 0.6rem;
-      border-bottom: 1px solid rgba(0, 243, 255, 0.15);
-    }
-
-    /* ── SOBRE MÍ ── */
-    .about-grid {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 2.2rem;
-      align-items: start;
-    }
-
-    .photo-frame {
-      width: 200px;
-      height: 238px;
-      border: 1px solid rgba(0, 243, 255, 0.35);
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg-card);
-      flex-shrink: 0;
-    }
-
-    .photo-frame::before {
-      content: '';
-      position: absolute; top: -2px; left: -2px;
-      width: 22px; height: 22px;
-      border-top: 2px solid var(--cyan);
-      border-left: 2px solid var(--cyan);
-    }
-
-    .photo-frame::after {
-      content: '';
-      position: absolute; bottom: -2px; right: -2px;
-      width: 22px; height: 22px;
-      border-bottom: 2px solid var(--cyan);
-      border-right: 2px solid var(--cyan);
-    }
-
-    .photo-placeholder { text-align: center; color: rgba(0, 243, 255, 0.25); }
-    .photo-placeholder svg { width: 38px; height: 38px; margin-bottom: 0.4rem; }
-    .photo-placeholder span { font-size: 0.46rem; letter-spacing: 1.5px; display: block; }
-
-    .about-bio {
-      font-size: 0.72rem;
-      color: rgba(0, 243, 255, 0.7);
-      line-height: 2;
-      margin-bottom: 1.5rem;
-    }
-
-    .skills-label {
-      font-size: 0.52rem;
-      letter-spacing: 3px;
-      color: var(--blue);
-      margin-bottom: 0.9rem;
-    }
-
-    .skill-row {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      margin-bottom: 0.6rem;
-    }
-
-    .skill-name {
-      font-size: 0.6rem;
-      color: rgba(0, 243, 255, 0.85);
-      width: 90px;
-      letter-spacing: 1px;
-      flex-shrink: 0;
-    }
-
-    .skill-bar-track {
-      flex: 1;
-      height: 4px;
-      background: rgba(0, 243, 255, 0.08);
-    }
-
-    .skill-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--blue), var(--cyan));
-      box-shadow: 0 0 8px rgba(0, 243, 255, 0.5);
-      position: relative;
-    }
-
-    .skill-bar-fill::after {
-      content: '';
-      position: absolute; right: -1px; top: -4px;
-      width: 2px; height: 12px;
-      background: var(--cyan);
-      box-shadow: 0 0 6px var(--cyan);
-    }
-
-    .skill-pct {
-      font-size: 0.56rem;
-      color: rgba(0, 243, 255, 0.6);
-      width: 30px;
-      text-align: right;
-      flex-shrink: 0;
-    }
-
-    /* ── PROYECTOS ── */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 1.3rem;
-    }
-
-    /* ── CERTIFICADOS ── */
-    .certs-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 1.2rem;
-    }
-
-    /* ── CONTACTO ── */
-    /* ocupa todo el ancho de la sección, 4 columnas iguales */
-    .contact-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.85rem;
-      width: 100%;
-    }
-
-    /* ════════════════════════════════════════
-       CAJAS BASE — card / cert-card / contact-card
-       ════════════════════════════════════════ */
-    .card,
-    .cert-card,
-    .contact-card {
-      position: relative;
-      transition: background 0.25s ease, color 0.25s ease,
-                  border-color 0.25s ease, box-shadow 0.25s ease;
-      /* las esquinas usan pseudo-elementos que también transicionan */
-    }
-
-    /* Esquinas base — ::before = sup-izq, ::after = inf-der */
-    .card::before,
-    .cert-card::before,
-    .contact-card::before {
-      content: '';
-      position: absolute;
-      top: -1px; left: -1px;
-      width: 17px; height: 17px;
-      border-top: 2px solid var(--cyan);
-      border-left: 2px solid var(--cyan);
-      border-bottom: none;
-      border-right: none;
-      transition: top 0.25s ease, left 0.25s ease,
-                  bottom 0.25s ease, right 0.25s ease,
-                  border-color 0.25s ease;
-    }
-
-    .card::after,
-    .cert-card::after,
-    .contact-card::after {
-      content: '';
-      position: absolute;
-      bottom: -1px; right: -1px;
-      width: 17px; height: 17px;
-      border-bottom: 2px solid var(--cyan);
-      border-right: 2px solid var(--cyan);
-      border-top: none;
-      border-left: none;
-      transition: top 0.25s ease, left 0.25s ease,
-                  bottom 0.25s ease, right 0.25s ease,
-                  border-color 0.25s ease;
-    }
-
-    /* Estilos específicos de cada caja */
-    
-    .fade-up {
-      opacity: 0;
-      transform: translateY(22px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-    }
-
-    .fade-up.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    
-    .card {
-      border: 1px solid rgba(0, 243, 255, 0.18);
-      background: var(--bg-card);
-      padding: 1.3rem;
-      text-decoration: none;
-      display: block;
-    }
-
-    .cert-card {
-      border: 1px solid rgba(0, 132, 255, 0.2);
-      background: var(--bg-cert);
-      padding: 1.2rem;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .contact-card {
-      border: 1px solid rgba(0, 243, 255, 0.14);
-      background: var(--bg-cert);
-      padding: 0.9rem 0.85rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 0.5rem;
-      text-decoration: none;
-    }
-
-    /* ── HOVER UNIVERSAL ──
-       Fondo cian claro, texto negro, esquinas invertidas en negro */
-    .card:hover,
-    .cert-card:hover,
-    .contact-card:hover {
-      background: var(--hover-bg);
-      border-color: var(--hover-bg);
-      box-shadow: 0 0 28px rgba(0, 243, 255, 0.25);
-      color: #000;
-    }
-
-    /* Textos se vuelven negros en hover */
-    .card:hover .card-id,
-    .card:hover .card-name,
-    .card:hover .card-desc,
-    .card:hover .card-tag,
-    .cert-card:hover .cert-name,
-    .cert-card:hover .cert-issuer,
-    .cert-card:hover .cert-year,
-    .cert-card:hover .cert-icon,
-    .cert-card:hover .cert-dot,
-    .contact-card:hover .contact-label,
-    .contact-card:hover .contact-value,
-    .contact-card:hover .contact-pending {
-      color: #000;
-    }
-
-    .card:hover .card-tag {
-      border-color: rgba(0, 0, 0, 0.25);
-    }
-
-    .contact-card:hover .contact-icon {
-      border-color: rgba(0, 0, 0, 0.25);
-    }
-
-    .contact-card:hover .contact-icon svg {
-      stroke: #000;
-    }
-
-    .cert-card:hover .cert-dot {
-      background: #000;
-      box-shadow: none;
-    }
-
-    /* Esquinas invertidas en hover: ::before va a inf-der, ::after va a sup-izq */
-    .card:hover::before,
-    .cert-card:hover::before,
-    .contact-card:hover::before {
-      top: auto;   bottom: -1px;
-      left: auto;  right: -1px;
-      border-top: none;   border-left: none;
-      border-bottom: 2px solid #000;
-      border-right:  2px solid #000;
-    }
-
-    .card:hover::after,
-    .cert-card:hover::after,
-    .contact-card:hover::after {
-      bottom: auto; top: -1px;
-      right: auto;  left: -1px;
-      border-bottom: none; border-right: none;
-      border-top:  2px solid #000;
-      border-left: 2px solid #000;
-    }
-
-    /* Dim — proyectos pendientes no tienen hover */
-    .card.dim { opacity: 0.35; pointer-events: none; }
-
-    /* ── CARD INTERNALS ── */
-    .card-id {
-      font-size: 0.5rem;
-      color: var(--blue);
-      letter-spacing: 3px;
-      margin-bottom: 0.6rem;
-    }
-
-    .card-name {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.78rem;
-      color: var(--white);
-      margin-bottom: 0.4rem;
-    }
-
-    .card-desc {
-      font-size: 0.62rem;
-      color: rgba(0, 243, 255, 0.5);
-      line-height: 1.7;
-    }
-
-    .card-tag {
-      display: inline-block;
-      font-size: 0.5rem;
-      color: var(--blue);
-      border: 1px solid rgba(0, 132, 255, 0.3);
-      padding: 2px 8px;
-      margin-top: 0.9rem;
-      letter-spacing: 1px;
-    }
-
-    /* ── CERT INTERNALS ── */
-    .cert-icon {
-      font-size: 0.52rem;
-      color: var(--blue);
-      letter-spacing: 2px;
-      margin-bottom: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .cert-dot {
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--blue);
-      box-shadow: 0 0 6px var(--blue);
-      flex-shrink: 0;
-      transition: background 0.25s ease, box-shadow 0.25s ease;
-    }
-
-    .cert-name {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.72rem;
-      color: var(--white);
-      margin-bottom: 0.3rem;
-    }
-
-    .cert-issuer { font-size: 0.6rem; color: rgba(0, 132, 255, 0.7); }
-    .cert-year   { font-size: 0.5rem; color: rgba(0, 243, 255, 0.3); margin-top: 0.5rem; }
-    .cert-card.dim { opacity: 0.35; pointer-events: none; }
-
-    /* ── CONTACT INTERNALS ── */
-    .contact-icon {
-      width: 44px; height: 44px;
-      border: 1px solid rgba(0, 243, 255, 0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: border-color 0.25s ease;
-    }
-
-    .contact-icon svg {
-      width: 21px; height: 21px;
-      stroke: var(--cyan);
-      fill: none;
-      stroke-width: 1.6;
-      transition: stroke 0.25s ease;
-    }
-
-    .contact-label {
-      font-size: 0.5rem;
-      color: var(--blue);
-      letter-spacing: 2px;
-      transition: color 0.25s ease;
-    }
-
-    .contact-value {
-      font-size: 0.58rem;
-      color: rgba(0, 243, 255, 0.8);
-      word-break: break-all;
-      transition: color 0.25s ease;
-    }
-
-    .contact-pending {
-      font-size: 0.5rem;
-      color: rgba(0, 243, 255, 0.25);
-      letter-spacing: 1px;
-      transition: color 0.25s ease;
-    }
-
-    .contact-note {
-      font-size: 0.54rem;
-      color: rgba(0, 243, 255, 0.18);
-      letter-spacing: 2px;
-      margin-top: 1.2rem;
-    }
-
-    /* ── STATUS BAR ── */
-    .status-bar {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-size: 0.5rem;
-      letter-spacing: 2px;
-      color: rgba(0, 243, 255, 0.3);
-      padding: 1rem 2.5rem;
-      border-top: 1px solid rgba(0, 243, 255, 0.08);
-      margin-top: 1rem;
-    }
-
-    .pulse {
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--cyan);
-      box-shadow: 0 0 6px var(--cyan);
-      animation: pulse 2s infinite;
-      flex-shrink: 0;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.15; }
-    }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 700px) {
-      .about-grid { grid-template-columns: 1fr; }
-      .photo-frame { width: 90px; height: 110px; }
-      nav { gap: 1rem; }
-      .contact-grid { grid-template-columns: 1fr 1fr; }
-    }
-
-    .glitch-overlay {
-      position: fixed; inset: 0;
-      background: var(--cyan);
-      z-index: 9999;
-      opacity: 0;
-      pointer-events: none;
-      mix-blend-mode: difference;
-    }
-
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Eddy Lima — Desarrollador Backend · Java</title>
+<meta name="description" content="Portafolio de Eddy Lima, desarrollador backend enfocado en Java y estudiante de Ingeniería en Ciencias de la Computación en la UEES, Guayaquil.">
+<meta name="author" content="Eddy Alexander Lima López">
+<link rel="canonical" href="https://elima-hub.github.io/">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_EC">
+<meta property="og:url" content="https://elima-hub.github.io/">
+<meta property="og:title" content="Eddy Lima — Desarrollador Backend · Java">
+<meta property="og:description" content="Proyectos en Java, Laravel, Prolog y Unity. Estudiante de Ingeniería en Ciencias de la Computación en la UEES.">
+<meta property="og:image" content="https://elima-hub.github.io/assets/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<meta name="theme-color" content="#0D1117" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FAFAF8" media="(prefers-color-scheme: light)">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+
+<script src="js/theme.js"></script>
 </head>
+
 <body>
 
-  <div class="scanlines"></div>
-  <div class="corner tl"></div>
-  <div class="corner tr"></div>
-  <div class="corner bl"></div>
-  <div class="corner br"></div>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
 
-  <!-- HEADER -->
-  <header>
-    <a href="#" class="logo">ELIMA</a>
-    <nav>
-      <a href="#sobre-mi">SOBRE MÍ</a>
-      <a href="#proyectos">PROYECTOS</a>
-      <a href="#certificados">CERTIFICADOS</a>
-      <a href="#contacto">CONTACTO</a>
-    </nav>
-  </header>
+<!-- ====================== NAVEGACIÓN ====================== -->
+<header class="nav">
+  <nav class="container nav__inner" aria-label="Navegación principal">
+    <a class="nav__brand" href="#inicio">Eddy Lima</a>
 
-  <!-- HERO -->
-  <div class="hero">
-    <div class="grid-bg"></div>
-    <p class="hero-tag">// PORTAFOLIO DIGITAL //</p>
-    <h1 class="hero-name" id="typing-name">&nbsp;</h1>
-    <p class="hero-role">INGENIERO EN SISTEMAS &nbsp;·&nbsp; BACK-END &nbsp;·&nbsp; CLOUD</p>
-    <div class="hero-line"></div>
-    <p class="hero-sub" id="typing-sub"></p>
-  </div>
+    <ul class="nav__list" id="nav-lista">
+      <li><a class="nav__link" href="#sobre-mi">Sobre mí</a></li>
+      <li><a class="nav__link" href="#proyectos">Proyectos</a></li>
+      <li><a class="nav__link" href="#habilidades">Habilidades</a></li>
+      <li><a class="nav__link" href="#formacion">Formación</a></li>
+      <li><a class="nav__link" href="#contacto">Contacto</a></li>
+    </ul>
 
-  <!-- SOBRE MÍ -->
-  <section>
-    <p class="section-tag fade-up" id="sobre-mi">// 01</p>
-    <h2 class="section-heading fade-up">SOBRE MÍ</h2>
-    <div class="about-grid">
+    <div class="nav__actions">
+      <button class="icon-btn" id="toggle-tema" aria-label="Cambiar tema">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>
+        </svg>
+      </button>
 
-      <div class="photo-frame">
-        <div class="photo-placeholder">
-          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="20" cy="14" r="7" stroke="#00f3ff" stroke-width="1" opacity="0.4"/>
-            <path d="M4 36 Q4 26 20 26 Q36 26 36 36" stroke="#00f3ff" stroke-width="1" opacity="0.4" fill="none"/>
+      <button class="icon-btn nav__toggle" id="toggle-menu"
+              aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-lista">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="contenido">
+
+  <!-- ====================== HERO ====================== -->
+  <section class="hero container" id="inicio">
+    <div class="hero__inner">
+      <span class="hero__eyebrow">&lt;/&gt; backend developer</span>
+
+      <h1>Eddy Lima</h1>
+      <p class="hero__role">Desarrollador Backend · Java</p>
+      <p class="hero__study">Estudiante de Ingeniería en Ciencias de la Computación — UEES</p>
+
+      <p class="hero__pitch">
+        Estudiante de Ingeniería en Ciencias de la Computación enfocado en desarrollo
+        backend con Java. Formación en arquitectura cloud y data engineering con
+        AWS Academy. Ambicioso, disciplinado y con ganas de seguir aprendiendo.
+      </p>
+
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="#proyectos">Ver proyectos</a>
+        <a class="btn btn--outline" href="assets/cv/cv-eddy-lima.pdf" download>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/>
           </svg>
-          <span>TU FOTO</span>
-        </div>
+          Descargar CV
+        </a>
+        <a class="btn btn--ghost" href="https://github.com/elima-hub"
+           target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 00-.9-2.6c3-.3 6.2-1.5 6.2-6.7a5.2 5.2 0 00-1.5-3.6 4.9 4.9 0 00-.1-3.6s-1.2-.4-3.9 1.5a13.4 13.4 0 00-7 0C6.1 1.2 4.9 1.6 4.9 1.6a4.9 4.9 0 00-.1 3.6A5.2 5.2 0 003.3 8.8c0 5.2 3.2 6.4 6.2 6.7a3.4 3.4 0 00-.9 2.6V22"/>
+          </svg>
+          GitHub
+        </a>
       </div>
 
-      <div>
-        <p class="about-bio">
-          Soy Eddy Lima, graduado de Ingeniero en Sistemas en la Universidad Espíritu Santo.
-          Enfocado en Back-end y herramientas en la Nube. Ambicioso, disciplinado y con ganas
-          de aprender en el proceso.
+      <p class="hero__meta">
+        <span>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 1116 0z"/><circle cx="12" cy="10" r="3"/>
+          </svg>
+          Guayaquil, Ecuador
+        </span>
+        <span>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 010 18a15 15 0 010-18z"/>
+          </svg>
+          Abierto a trabajo remoto
+        </span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ====================== SOBRE MÍ ====================== -->
+  <section class="section" id="sobre-mi">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">01 / PERFIL</span>
+        <h2>Sobre mí</h2>
+      </div>
+
+      <div class="about reveal">
+        <figure class="about__figure">
+          <img class="about__photo" src="assets/img/perfil.jpg"
+               alt="Retrato de Eddy Lima" width="400" height="400" loading="lazy">
+          <figcaption class="about__caption">Guayaquil, Ecuador</figcaption>
+        </figure>
+
+        <div class="about__text">
+          <p>
+            Curso el quinto semestre de Ingeniería en Ciencias de la Computación en la
+            Universidad Espíritu Santo, en Guayaquil, con una beca por mérito académico.
+            Mi interés está en el backend: cómo se organiza la lógica de una aplicación,
+            cómo se guardan los datos y cómo se mantiene el orden cuando el código crece.
+          </p>
+          <p>
+            Trabajo principalmente con Java aplicando programación orientada a objetos y
+            principios SOLID. También he construido aplicaciones web con Laravel, modelado
+            bases de conocimiento en Prolog y desarrollado un videojuego en Unity — cada
+            uno me obligó a pensar en un paradigma distinto.
+          </p>
+          <p>
+            Complementé esa base con dos programas de AWS Academy en arquitectura cloud y
+            data engineering. Busco una primera oportunidad profesional donde poder aplicar
+            todo esto y seguir aprendiendo con un equipo.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== PROYECTOS ====================== -->
+  <section class="section" id="proyectos">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">02 / TRABAJO</span>
+        <h2>Proyectos</h2>
+        <p>
+          Cuatro proyectos construidos durante la carrera. Cada uno incluye el
+          repositorio y una nota sobre qué aprendí al construirlo.
+        </p>
+      </div>
+
+      <div class="projects" id="lista-proyectos"></div>
+    </div>
+  </section>
+
+  <!-- ====================== HABILIDADES ====================== -->
+  <section class="section" id="habilidades">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">03 / STACK</span>
+        <h2>Habilidades técnicas</h2>
+        <p>Agrupadas por el nivel real de dominio, no por preferencia.</p>
+      </div>
+
+      <div class="skills">
+        <div class="skill-group reveal">
+          <div class="skill-group__label">
+            <h3>Principal</h3>
+            <p>Lo que domino y puedo defender en una entrevista técnica.</p>
+          </div>
+          <div class="chips">
+            <span class="chip">Java SE</span>
+            <span class="chip">Programación orientada a objetos</span>
+            <span class="chip">Principios SOLID</span>
+            <span class="chip">Arquitectura por capas</span>
+            <span class="chip">Manejo de excepciones</span>
+          </div>
+        </div>
+
+        <div class="skill-group reveal">
+          <div class="skill-group__label">
+            <h3>Con experiencia en proyectos</h3>
+            <p>Tecnologías que he usado para construir algo funcional.</p>
+          </div>
+          <div class="chips">
+            <span class="chip chip--muted">PHP</span>
+            <span class="chip chip--muted">Laravel</span>
+            <span class="chip chip--muted">Eloquent ORM</span>
+            <span class="chip chip--muted">MySQL</span>
+            <span class="chip chip--muted">SQL</span>
+            <span class="chip chip--muted">Blade</span>
+            <span class="chip chip--muted">Bootstrap</span>
+            <span class="chip chip--muted">Tailwind CSS</span>
+            <span class="chip chip--muted">Git</span>
+            <span class="chip chip--muted">C#</span>
+            <span class="chip chip--muted">Unity</span>
+          </div>
+        </div>
+
+        <div class="skill-group reveal">
+          <div class="skill-group__label">
+            <h3>En exploración</h3>
+            <p>Bases sólidas, todavía en profundización.</p>
+          </div>
+          <div class="chips">
+            <span class="chip chip--muted">Prolog</span>
+            <span class="chip chip--muted">JavaScript</span>
+            <span class="chip chip--muted">HTML</span>
+            <span class="chip chip--muted">CSS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== FORMACIÓN Y CERTIFICACIONES ====================== -->
+  <section class="section" id="formacion">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">04 / RESPALDO</span>
+        <h2>Formación y certificaciones</h2>
+      </div>
+
+      <div class="split">
+        <article class="panel reveal">
+          <h3>Ingeniería en Ciencias de la Computación</h3>
+          <p class="panel__sub">Universidad Espíritu Santo (UEES) · Guayaquil, Ecuador</p>
+
+          <dl class="facts">
+            <div class="fact"><dt>Periodo</dt><dd>2024 — 2028</dd></div>
+            <div class="fact"><dt>Nivel actual</dt><dd>Quinto semestre</dd></div>
+            <div class="fact"><dt>Promedio</dt><dd>86.5 / 100</dd></div>
+            <div class="fact"><dt>Distinción</dt><dd>Beca por mérito académico (40%)</dd></div>
+            <div class="fact"><dt>Español</dt><dd>Nativo</dd></div>
+            <div class="fact"><dt>Inglés</dt><dd>B1 intermedio · EF SET 2026</dd></div>
+          </dl>
+        </article>
+
+        <article class="panel reveal">
+          <h3>Certificaciones</h3>
+          <p class="panel__sub">Programas completados en AWS Academy</p>
+
+          <div class="badges">
+            <div class="badge-card">
+              <img src="assets/img/badges/aws-cloud-architecting.png"
+                   alt="Insignia de AWS Academy Cloud Architecting"
+                   width="110" height="110" loading="lazy">
+              <p class="badge-card__name">Cloud Architecting</p>
+              <p class="badge-card__issuer">AWS ACADEMY · 173489</p>
+            </div>
+
+            <div class="badge-card">
+              <img src="assets/img/badges/aws-data-engineering.png"
+                   alt="Insignia de AWS Academy Data Engineering"
+                   width="110" height="110" loading="lazy">
+              <p class="badge-card__name">Data Engineering</p>
+              <p class="badge-card__issuer">AWS ACADEMY · TRAINED</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== CONTACTO ====================== -->
+  <section class="section section--tight" id="contacto">
+    <div class="container">
+      <div class="contact reveal">
+        <span class="eyebrow">05 / CONTACTO</span>
+        <h2>Hablemos</h2>
+        <p>
+          Estoy abierto a prácticas profesionales y oportunidades de desarrollo backend,
+          presenciales en Guayaquil o remotas. Escríbeme y respondo.
         </p>
 
-        <p class="skills-label">// LENGUAJES Y HERRAMIENTAS</p>
-
-        <div class="skill-row">
-          <span class="skill-name">JAVA</span>
-          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:42%"></div></div>
-          <span class="skill-pct">42%</span>
-        </div>
-        <div class="skill-row">
-          <span class="skill-name">SQL</span>
-          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:38%"></div></div>
-          <span class="skill-pct">38%</span>
-        </div>
-        <div class="skill-row">
-          <span class="skill-name">SPRING</span>
-          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:28%"></div></div>
-          <span class="skill-pct">28%</span>
-        </div>
-        <div class="skill-row">
-          <span class="skill-name">HTML / CSS</span>
-          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:33%"></div></div>
-          <span class="skill-pct">33%</span>
-        </div>
-        <div class="skill-row">
-          <span class="skill-name">AWS / CLOUD</span>
-          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:20%"></div></div>
-          <span class="skill-pct">20%</span>
+        <div class="contact__actions">
+          <a class="btn btn--primary" href="mailto:elima@uees.edu.ec">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>
+            </svg>
+            elima@uees.edu.ec
+          </a>
+          <a class="btn btn--outline" href="https://github.com/elima-hub"
+             target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 00-.9-2.6c3-.3 6.2-1.5 6.2-6.7a5.2 5.2 0 00-1.5-3.6 4.9 4.9 0 00-.1-3.6s-1.2-.4-3.9 1.5a13.4 13.4 0 00-7 0C6.1 1.2 4.9 1.6 4.9 1.6a4.9 4.9 0 00-.1 3.6A5.2 5.2 0 003.3 8.8c0 5.2 3.2 6.4 6.2 6.7a3.4 3.4 0 00-.9 2.6V22"/>
+            </svg>
+            GitHub
+          </a>
+          <a class="btn btn--outline" href="assets/cv/cv-eddy-lima.pdf" download>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/>
+            </svg>
+            Descargar CV
+          </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PROYECTOS -->
-  <section>
-    <p class="section-tag fade-up" id="proyectos">// 02</p>
-    <h2 class="section-heading fade-up">PROYECTOS</h2>
-    <div class="projects-grid">
+</main>
 
-      <a href="./2025-2 - Programación Orientada a Objetos/index.html" class="card" onclick="glitchTransition(event, this.href)">
-        <p class="card-id">PRJ-001</p>
-        <h3 class="card-name">Programación Orientada a Objetos</h3>
-        <p class="card-desc">Implementación de Billetera Virtual con interfaz a nivel terminal</p>
-        <span class="card-tag">2025-2</span>
-      </a>
-
-      <a href="./2026-1 - Lenguajes de Programación/index.html" class="card" onclick="glitchTransition(event, this.href)">
-        <p class="card-id">PRJ-002</p>
-        <h3 class="card-name">Lenguajes de Programación</h3>
-        <p class="card-desc">Sistema de juego a base de consultas usando Laravel y Prolog</p>
-        <span class="card-tag">2026-1</span>
-      </a>
-
-      <a href="./2026-1 - KeyVault/index.html" class="card" onclick="glitchTransition(event, this.href)">
-        <p class="card-id">PRJ-003</p>
-        <h3 class="card-name">KeyVault</h3>
-        <p class="card-desc">Gestor de credenciales digitales cifrado, desarrollado en pareja con Laravel</p>
-        <span class="card-tag">2026-1</span>
-      </a>
-
+<!-- ====================== FOOTER ====================== -->
+<footer class="footer">
+  <div class="container footer__inner">
+    <p>© <span id="anio">2026</span> Eddy Alexander Lima López · Guayaquil, Ecuador</p>
+    <div class="footer__links">
+      <a href="mailto:elima@uees.edu.ec">Correo</a>
+      <a href="https://github.com/elima-hub" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="#inicio">Volver arriba</a>
     </div>
-  </section>
-
-  <!-- CERTIFICADOS -->
-  <section>
-    <p class="section-tag fade-up" id="certificados">// 03</p>
-    <h2 class="section-heading fade-up">CERTIFICADOS</h2>
-    <div class="certs-grid">
-
-      <div class="cert-card fade-up">
-        <div class="cert-icon"><div class="cert-dot"></div>EN PROGRESO</div>
-        <h3 class="cert-name">PROGRAMACIÓN ORIENTADA A OBJETOS</h3>
-        <p class="cert-issuer">TodoCode Academy</p>
-        <p class="cert-year">2026 · PROGRAMACIÓN</p>
-      </div>
-
-      <a href="https://drive.google.com/file/d/1q_2r1jH4IIYktbaNUckAUcofbAZKCbm1/view?usp=sharing" target="_blank" rel="noopener" class="cert-card fade-up">
-        <div class="cert-icon"><div class="cert-dot"></div>VERIFICADO</div>
-        <h3 class="cert-name">BEYOND LIMITS</h3>
-        <p class="cert-issuer">Universidad Espíritu Santo</p>
-        <p class="cert-year">2026 · IA</p>
-      </a>
-
-      <a href="https://drive.google.com/file/d/1NLwB95jLnbaulVc-8jDKfX8eS74DkBl6/view?usp=sharing" target="_blank" rel="noopener" class="cert-card fade-up">
-        <div class="cert-icon"><div class="cert-dot"></div>VERIFICADO</div>
-        <h3 class="cert-name">CURSO DE IA: DE 0 A AGENTES</h3>
-        <p class="cert-issuer">Big School</p>
-        <p class="cert-year">2026 · IA</p>
-      </a>
-
-    </div>
-  </section>
-
-  <!-- CONTACTO -->
-  <section>
-    <p class="section-tag fade-up" id="contacto">// 04</p>
-    <h2 class="section-heading fade-up">CONTACTO</h2>
-    <div class="contact-grid">
-
-      <div class="contact-card fade-up">
-        <div class="contact-icon">
-          <svg viewBox="0 0 24 24">
-            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-            <rect x="2" y="9" width="4" height="12"/>
-            <circle cx="4" cy="4" r="2"/>
-          </svg>
-        </div>
-        <p class="contact-label">LINKEDIN</p>
-        <p class="contact-pending">// próximamente</p>
-      </div>
-
-      <a href="mailto:elima@uees.edu.ec" class="contact-card fade-up">
-        <div class="contact-icon">
-          <svg viewBox="0 0 24 24">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-            <polyline points="22,6 12,13 2,6"/>
-          </svg>
-        </div>
-        <p class="contact-label">EMAIL</p>
-        <p class="contact-value">elima@uees.edu.ec</p>
-      </a>
-
-      <a href="https://github.com/elima-hub" target="_blank" rel="noopener" class="contact-card fade-up">
-        <div class="contact-icon">
-          <svg viewBox="0 0 24 24">
-            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-          </svg>
-        </div>
-        <p class="contact-label">GITHUB</p>
-        <p class="contact-value">elima-hub</p>
-      </a>
-
-      <div class="contact-card fade-up">
-        <div class="contact-icon">
-          <svg viewBox="0 0 24 24" stroke-width="1.5">
-            <path d="M18 20v-5h2v7H4v-7h2v5z"/>
-            <path d="M7 17h10v-2H7zM7.4 13.8l9.8 2 .4-2-9.8-2zM8.7 9.9l9 4.1.8-1.8-9-4.2zM11.3 6.3l7.5 6 1.3-1.5-7.6-6zM15 3l-1.5 1.1 5.9 7.9L21 10.9z"/>
-          </svg>
-        </div>
-        <p class="contact-label">STACK OVERFLOW</p>
-        <p class="contact-pending">// próximamente</p>
-      </div>
-
-    </div>
-    <p class="contact-note">// DISPONIBLE PARA OPORTUNIDADES PROFESIONALES</p>
-  </section>
-
-  <!-- STATUS BAR -->
-  <div class="status-bar">
-    <div class="pulse"></div>
-    <span>SISTEMA ACTIVO</span>
-    <span style="margin-left:auto;">ELIMA-HUB v1.0 &nbsp;·&nbsp; GITHUB PAGES</span>
   </div>
+</footer>
 
+<!-- ====================== MODAL DE PROYECTO ====================== -->
+<div class="modal" id="modal-proyecto" role="dialog" aria-modal="true"
+     aria-labelledby="modal-titulo">
+  <div class="modal__panel"></div>
+</div>
+
+<script src="js/projects.js" defer></script>
+<script src="js/nav.js" defer></script>
 <script>
-    // ── TYPING EFFECT ──
-    const NAME_LINES = ['EDDY', 'LIMA'];
-    const SUB_TEXT   = 'BIENVENIDO A LA RED';
-    const SPEED_NAME = 100;
-    const SPEED_SUB  = 65;
-    const PAUSE      = 450;
-
-    const elName = document.getElementById('typing-name');
-    const elSub  = document.getElementById('typing-sub');
-
-    function typeLine(el, text, speed, cb) {
-      let i = 0;
-      const id = setInterval(() => {
-        el.innerHTML = el.innerHTML.replace('▋', '') + text[i] + '▋';
-        i++;
-        if (i === text.length) {
-          clearInterval(id);
-          el.innerHTML = el.innerHTML.replace('▋', '');
-          if (cb) cb();
-        }
-      }, speed);
-    }
-
-    function typeNameLines(lines, el, speed, pause, cb) {
-      let idx = 0;
-      el.innerHTML = '';
-
-      function next() {
-        if (idx > 0) el.innerHTML += '<br>';
-        const span = document.createElement('span');
-        el.appendChild(span);
-        typeLine(span, lines[idx], speed, () => {
-          idx++;
-          if (idx < lines.length) setTimeout(next, pause);
-          else if (cb) setTimeout(cb, pause);
-        });
-      }
-      next();
-    }
-
-    // Arranca: primero nombre, luego subtítulo
-    window.addEventListener('DOMContentLoaded', () => {
-      typeNameLines(NAME_LINES, elName, SPEED_NAME, PAUSE, () => {
-        typeLine(elSub, SUB_TEXT, SPEED_SUB, null);
-      });
-    });
-
-    // ── FADE-IN EN SCROLL ──
-    const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
-    if (entry.isIntersecting) {
-      setTimeout(() => {
-        entry.target.classList.add('visible');
-      }, i * 80);
-    } else {
-      entry.target.classList.remove('visible');
-    }
-  });
-}, { threshold: 0.12 });
-
-    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-
-    function glitchTransition(e, href) {
-      e.preventDefault();
-      const overlay = document.createElement('div');
-      overlay.className = 'glitch-overlay';
-      document.body.appendChild(overlay);
-
-      const flashes = [0, 80, 140, 200, 280, 360, 420];
-      flashes.forEach((t, i) => {
-        setTimeout(() => {
-          overlay.style.opacity = i % 2 === 0 ? '0.15' : '0';
-        }, t);
-      });
-
-      setTimeout(() => {
-        overlay.style.opacity = '1';
-        overlay.style.transition = 'opacity 0.1s ease';
-      }, 480);
-
-      setTimeout(() => { window.location.href = href; }, 580);
-    }
-  </script>
+  document.getElementById("anio").textContent = new Date().getFullYear();
+</script>
 
 </body>
 </html>

@@ -1,0 +1,113 @@
+/* ==========================================================================
+   variables.css — Tokens de diseño
+   Un solo acento (azul), dos calibraciones para cumplir contraste AA.
+   ========================================================================== */
+
+:root {
+  /* Tipografía */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Escala tipográfica */
+  --fs-xs:    0.75rem;   /* 12px */
+  --fs-sm:    0.875rem;  /* 14px */
+  --fs-base:  1rem;      /* 16px */
+  --fs-md:    1.125rem;  /* 18px */
+  --fs-lg:    1.375rem;  /* 22px */
+  --fs-xl:    1.75rem;   /* 28px */
+  --fs-2xl:   2.25rem;   /* 36px */
+  --fs-3xl:   3rem;      /* 48px */
+
+  --lh-tight: 1.2;
+  --lh-base:  1.65;
+
+  /* Espaciado */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-6: 1.5rem;
+  --sp-8: 2rem;
+  --sp-12: 3rem;
+  --sp-16: 4rem;
+  --sp-24: 6rem;
+
+  /* Layout */
+  --container: 1080px;
+  --radius: 6px;
+  --radius-lg: 10px;
+  --nav-h: 64px;
+
+  /* Motion */
+  --dur: 150ms;
+  --dur-slow: 500ms;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --------------------------------------------------------------------------
+   Modo oscuro (por defecto)
+   -------------------------------------------------------------------------- */
+:root,
+[data-theme="dark"] {
+  --bg:            #0D1117;
+  --surface:       #1A212B;
+  --surface-hover: #212936;
+  --border:        #303845;
+  --border-strong: #5B6472;
+
+  --text:          #E6EDF3;
+  --text-muted:    #8B949E;
+
+  --accent:        #58A6FF;
+  --accent-hover:  #79B8FF;
+  --accent-soft:   rgba(88, 166, 255, 0.12);
+  --on-accent:     #04213F;
+
+  --success:       #3FB950;
+  --success-soft:  rgba(63, 185, 80, 0.14);
+  --warning:       #D29922;
+  --warning-soft:  rgba(210, 153, 34, 0.14);
+
+  /* Textura de fondo */
+  --wash-a:     rgba(88, 166, 255, 0.11);
+  --wash-b:     rgba(88, 166, 255, 0.055);
+  --noise:      0.35;
+
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4);
+  color-scheme: dark;
+}
+
+/* --------------------------------------------------------------------------
+   Modo claro
+   -------------------------------------------------------------------------- */
+[data-theme="light"] {
+  --bg:            #FFFFFF;
+  --surface:       #F2F4F7;
+  --surface-hover: #E7EAF0;
+  --border:        #BEC4CF;
+  --border-strong: #9AA0AC;
+
+  --text:          #18181B;
+  --text-muted:    #52525B;
+
+  --accent:        #1A5FA8;
+  --accent-hover:  #144A83;
+  --accent-soft:   rgba(26, 95, 168, 0.10);
+  --on-accent:     #FFFFFF;
+
+  --success:       #15803D;
+  --success-soft:  rgba(21, 128, 61, 0.10);
+  --warning:       #A16207;
+  --warning-soft:  rgba(161, 98, 7, 0.10);
+
+  /* Textura de fondo */
+  --wash-a:     rgba(26, 95, 168, 0.13);
+  --wash-b:     rgba(26, 95, 168, 0.075);
+  --noise:      0.45;
+
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.07),
+                 0 6px 16px -4px rgba(16, 24, 40, 0.14);
+  color-scheme: light;
+}
