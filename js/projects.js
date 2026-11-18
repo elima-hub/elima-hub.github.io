@@ -5,6 +5,35 @@
 
 const PROYECTOS = [
   {
+    id: "spare",
+    nombre: "SPARE",
+    resumen:
+      "Sistema de Planificación Académica y Reservas de Espacios: frontend colaborativo de varios grupos del curso, pensado para usarse dentro de la universidad. Backend pendiente.",
+    problema:
+      "Centralizar la planificación académica y la reserva de espacios de la universidad en un solo sistema, construido en paralelo por varios equipos sobre un mismo repositorio. Hoy existe el frontend; el backend todavía está por construirse.",
+    rol: "En equipo · grupo de reportería e integración de ramas",
+    anio: "2026",
+    estado: "en progreso",
+    stack: ["TypeScript", "HTML", "CSS", "Git"],
+    caracteristicas: [
+      "Proyecto colaborativo entre varios grupos, cada uno a cargo de un módulo",
+      "Etapa actual: frontend en desarrollo; backend pendiente",
+      "Desarrollo del módulo de reportería con el grupo 5",
+      "Responsable de integrar las ramas de los compañeros en la rama del grupo",
+      "Apertura del pull request del grupo hacia la rama principal",
+    ],
+    aprendizaje:
+      "Aprendí a trabajar en un repositorio compartido por muchos equipos: mantener una rama de grupo, integrar el trabajo de mis compañeros sin romper lo existente y preparar un pull request que otros revisan antes de llegar a main.",
+    repo: "https://github.com/uees-ucom351-po2-2026/spare-frontend",
+    repoPrivado: true,
+    imagenes: [
+      "assets/img/proyectos/spare.png",
+      "assets/img/proyectos/spare-2.png",
+      "assets/img/proyectos/spare-3.png",
+      "assets/img/proyectos/spare-4.png",
+    ],
+  },
+  {
     id: "billetera",
     nombre: "Billetera Virtual",
     resumen:
@@ -14,7 +43,7 @@ const PROYECTOS = [
     rol: "Individual",
     anio: "2025",
     estado: "terminado",
-    stack: ["Java SE", "POO", "SOLID", "Serialización", "Excepciones"],
+    stack: ["Java"],
     caracteristicas: [
       "Arquitectura por capas: app, modelo, servicio, repositorio, notificación, excepciones y ui",
       "Persistencia mediante serialización de objetos a usuarios.dat",
@@ -40,7 +69,7 @@ const PROYECTOS = [
     rol: "En equipo · módulos de Identidades, Notas Seguras y Carpetas",
     anio: "2026",
     estado: "terminado",
-    stack: ["Laravel", "Eloquent", "Breeze", "Blade", "Tailwind", "MySQL"],
+    stack: ["Laravel", "PHP", "MySQL"],
     caracteristicas: [
       "Autenticación de usuarios con Laravel Breeze",
       "Módulos de identidades, notas seguras y carpetas (desarrollo propio)",
@@ -66,7 +95,7 @@ const PROYECTOS = [
     rol: "Individual",
     anio: "2026",
     estado: "terminado",
-    stack: ["SWI-Prolog", "Laravel 13", "PHP 8.4", "Blade", "Bootstrap 5"],
+    stack: ["Prolog", "Laravel", "PHP"],
     caracteristicas: [
       "Base de conocimiento en Prolog con hechos y reglas del mundo del juego",
       "Puente PHP ↔ Prolog mediante shell_exec() aislado en PrologService",
@@ -91,8 +120,8 @@ const PROYECTOS = [
       "Construir un juego completo de punta a punta —control, cámara, estados, audio y menús— coordinando dos personas sobre el mismo repositorio.",
     rol: "En equipo · jugador, cámara, menús, estados de juego, audio y UI",
     anio: "2026",
-    estado: "en progreso",
-    stack: ["Unity", "C#", "Física 2D", "TextMeshPro", "Git"],
+    estado: "terminado",
+    stack: ["Unity", "C#", "Git"],
     caracteristicas: [
       "Movimiento, salto, ataque y sistema de vidas del jugador",
       "Estados de juego con GameManager, menú principal y tres finales",
@@ -115,10 +144,21 @@ const PROYECTOS = [
 const ICON_CODE =
   '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>';
 
+const ICON_LOCK =
+  '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>';
+
 function escaparHtml(texto) {
   const div = document.createElement("div");
   div.textContent = texto;
   return div.innerHTML;
+}
+
+/* Enlace al repositorio, o etiqueta "Repositorio privado" si no es público. */
+function botonRepo(p, clases, texto) {
+  if (p.repoPrivado) {
+    return `<span class="btn ${clases} btn--disabled" aria-disabled="true">${ICON_LOCK} Repositorio privado</span>`;
+  }
+  return `<a class="btn ${clases}" href="${p.repo}" target="_blank" rel="noopener noreferrer">${ICON_CODE} ${texto}</a>`;
 }
 
 function etiquetaEstado(estado) {
@@ -168,10 +208,7 @@ function crearTarjeta(p) {
         <button class="btn btn--sm btn--outline" data-proyecto="${p.id}">
           Ver detalles
         </button>
-        <a class="btn btn--sm btn--ghost" href="${p.repo}"
-           target="_blank" rel="noopener noreferrer">
-          ${ICON_CODE} Código
-        </a>
+        ${botonRepo(p, "btn--sm btn--ghost", "Código")}
       </div>
     </div>
   `;
@@ -232,9 +269,7 @@ function abrirModal(p) {
           .join("")}
       </div>
       <div class="modal__actions">
-        <a class="btn btn--primary" href="${p.repo}" target="_blank" rel="noopener noreferrer">
-          ${ICON_CODE} Ver repositorio
-        </a>
+        ${botonRepo(p, "btn--primary", "Ver repositorio")}
         <button class="btn btn--outline" data-cerrar>Cerrar</button>
       </div>
     </div>

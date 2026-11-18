@@ -506,6 +506,7 @@
 
 .modal__panel {
   background: var(--surface);
+  overscroll-behavior: contain; /* el scroll no se pasa a la página de fondo */
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   width: min(760px, 100%);
@@ -517,6 +518,7 @@
 .modal__head {
   position: sticky;
   top: 0;
+  z-index: 2; /* por encima de los elementos con position: relative del cuerpo */
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   padding: var(--sp-6);
@@ -710,6 +712,59 @@ body.no-scroll {
   margin-top: var(--sp-1);
 }
 
+/* Tarjeta sin imagen (curso en progreso) */
+.badge-card--text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge-card__mark {
+  display: grid;
+  place-items: center;
+  width: 110px;
+  height: 110px;
+  margin-bottom: var(--sp-3);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: var(--fs-lg);
+  font-weight: 500;
+  color: var(--accent);
+}
+
+/* Certificado mostrado como imagen */
+.cert {
+  margin: var(--sp-6) 0 0;
+}
+
+.cert a {
+  display: block;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color var(--dur) var(--ease);
+}
+
+.cert a:hover,
+.cert a:focus-visible {
+  border-color: var(--accent);
+}
+
+.cert img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.cert__caption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  margin-top: var(--sp-3);
+}
+
 /* --------------------------------------------------------------------------
    Contacto
    -------------------------------------------------------------------------- */
@@ -852,4 +907,42 @@ body.no-scroll {
     align-items: flex-start;
     gap: var(--sp-3);
   }
+}
+/* Botón no interactivo (repositorio privado) */
+.btn--disabled {
+  cursor: default;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.cert__note {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  margin-top: var(--sp-1);
+}
+
+/* Formación en tres bloques: carrera, cursos y certificado */
+.split--3 {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--sp-6);
+  align-items: start;
+}
+
+.split--3 .badges {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.split--3 .badge-card img,
+.split--3 .badge-card__mark {
+  width: 100%;
+  max-width: 110px;
+}
+
+.split--3 .badge-card__mark {
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.split--3 .cert {
+  margin-top: 0;
 }

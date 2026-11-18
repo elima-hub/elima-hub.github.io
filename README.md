@@ -61,28 +61,16 @@ genera la tarjeta y su modal automáticamente — no se toca el HTML.
 
 ## Assets pendientes
 
-Las imágenes marcadas abajo son placeholders. Al reemplazar el archivo con el
-mismo nombre, el sitio lo toma sin tocar código.
+| Archivo | Estado |
+|---|---|
+| `assets/img/badges/aws-cloud-architecting.png` | Pendiente — la tarjeta está comentada en `index.html` |
 
-| Archivo | Estado | Especificación |
-|---|---|---|
-| `assets/cv/cv-eddy-lima.pdf` | **Falta** | PDF, menos de 2 MB |
-| `assets/img/perfil.jpg` | Placeholder | Cuadrada, mínimo 400×400 |
-| `assets/img/badges/aws-cloud-architecting.png` | Placeholder | PNG de la insignia |
-| `assets/img/badges/aws-data-engineering.png` | Listo | — |
-| `assets/img/og-image.png` | Placeholder | 1200×630, opcional |
-| `assets/img/proyectos/billetera*.png` | **Faltan** | 16:9, ideal 1280×720 |
-| `assets/img/proyectos/keyvault*.png` | **Faltan** | 16:9 |
-| `assets/img/proyectos/prolog*.png` | **Faltan** | 16:9 |
-| `assets/img/proyectos/caballero*.png` | **Faltan** | 16:9 |
+Cada proyecto usa `nombre.png` (portada de la tarjeta) más `nombre-2.png`, `nombre-3.png`…
+(galería del modal). Si falta un archivo, la tarjeta muestra un marcador y la galería
+lo omite. Un proyecto con repositorio privado lleva `repoPrivado: true` y muestra
+"Repositorio privado" en lugar del enlace.
 
-Cada proyecto usa tres archivos: `nombre.png` (portada de la tarjeta) más
-`nombre-2.png` y `nombre-3.png` (galería del modal). Mientras falten, la tarjeta
-muestra un marcador con el nombre exacto del archivo esperado y la galería omite
-las imágenes ausentes.
-
-Comprimir antes de subir (por ejemplo con squoosh.app). Objetivo: menos de 300 KB
-por imagen — GitHub Pages no optimiza imágenes.
+Comprimir antes de subir. Objetivo: menos de 400 KB por imagen.
 
 ---
 
