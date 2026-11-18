@@ -96,3 +96,6 @@ JS como archivos separados.
   agrupación, que es más honesto y más informativo.
 - **Movimiento mínimo.** Dos efectos: revelado al entrar en viewport y
   transiciones de hover. Ambos respetan `prefers-reduced-motion`.
+- **Versionado de archivos.** Los enlaces a CSS, JS y al CV llevan `?v=AAAAMMDD` en
+  `index.html`. Al cambiar alguno de esos archivos, actualizar ese número para que los
+  navegadores no usen la versión vieja en caché.
